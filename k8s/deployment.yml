@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    name: nginx
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: nginx
+        version: "white"
+    spec:
+      containers:
+      - image: rupgautam/alpine-nginx:3.10
+        name: alpine-nginx
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
