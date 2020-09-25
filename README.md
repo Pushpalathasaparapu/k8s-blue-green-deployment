@@ -5,7 +5,8 @@
 Summary
 =================
 Building highly available system, which servers traffic via load balancer, balancing traffic from multiple containers.
-<img src="../pd-data/k8s/k8s-diagram.png">
+![k8s diagram]("k8s-diagram.png")
+![alt text](https://github.com/rupgautam/prescriptivedata.io/blob/master/k8s-diagram.png?raw=true)
 
 
 Technology Stack
