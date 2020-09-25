@@ -5,9 +5,14 @@
 Summary
 =================
 Building highly available system, which servers traffic via load balancer, balancing traffic from multiple containers.
-![k8s diagram]("k8s-diagram.png")
-![alt text](https://github.com/rupgautam/prescriptivedata.io/blob/master/k8s-diagram.png?raw=true)
+![k8s diagram](https://github.com/rupgautam/prescriptivedata.io/blob/master/k8s-diagram.png?raw=true)
 
+Demos
+=================
+Demo can be access here. 
+* http://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/all
+* http://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/green
+* http://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/blue
 
 Technology Stack
 =================
@@ -23,6 +28,7 @@ Table Of Contents
 =================
 - [Prescriptive Data DevOps Project](#prescriptive-data-devops-project)
 - [Summary](#summary)
+- [Demos](#demos)
 - [Technology Stack](#technology-stack)
 - [Table Of Contents](#table-of-contents)
 - [Prerequisite](#prerequisite)
@@ -31,7 +37,6 @@ Table Of Contents
 - [Deployments](#deployments)
 - [Monitoring](#monitoring)
 - [Project Resources](#project-resources)
-- [Demos](#demos)
 
 Prerequisite
 =================
@@ -171,9 +176,3 @@ Project Resources
 * Docker Docs
 * 90% of Google search 
 
-Demos
-=================
-Demo can be access here. 
-* [/all](https://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/all)
-* [/green](https://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/green)
-* [/blue](https://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/blue)
