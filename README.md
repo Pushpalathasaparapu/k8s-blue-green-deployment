@@ -5,7 +5,7 @@
 Summary
 =================
 Building highly available system, which servers traffic via load balancer, balancing traffic from multiple containers.
-![k8s diagram](../pd-data/k8s/k8s-diagram.svg)
+<img src="../pd-data/k8s/k8s-diagram.svg">
 
 
 Technology Stack
