@@ -10,9 +10,9 @@ Building highly available system, which servers traffic via load balancer, balan
 Demos
 =================
 Demo can be access here. 
-* http://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/all
-* http://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/green
-* http://a0d0dfc145f8a467db63b34d50c1126d-3514ae0d7f621945.elb.us-east-1.amazonaws.com/blue
+* http://a3173397d93f34074a1332f104b58472-12a22ed26c201159.elb.us-east-1.amazonaws.com/all
+* http://a3173397d93f34074a1332f104b58472-12a22ed26c201159.elb.us-east-1.amazonaws.com/blue
+* http://a3173397d93f34074a1332f104b58472-12a22ed26c201159.elb.us-east-1.amazonaws.com/green
 
 Technology Stack
 =================
@@ -35,6 +35,7 @@ Table Of Contents
 - [Docker build](#docker-build)
 - [Kubernetes](#kubernetes)
 - [Deployments](#deployments)
+- [Scaling](#scaling)
 - [Monitoring](#monitoring)
 - [Project Resources](#project-resources)
 
@@ -66,21 +67,33 @@ Kubernetes
 Installing k8s cluster using `kops` 
 
 ```
-export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
-export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-export AWS_DEFAULT_REGION=us-east-1
-export KOPS_STATE_STORE=s3://k8s-state-store
+export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
+export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
+export KOPS_STATE_STORE=s3://domain-example-state
 export NAME=k8s.rupgautam.me
+export NODE_SIZE=${NODE_SIZE:-m3.medium}
+export MASTER_SIZE=${MASTER_SIZE:-m3.medium}
+export ZONES=${ZONES:-"us-east-1a,us-east-1b,us-east-1c"}
+```
+```
+kops create cluster ${NAME} \
+  --zones $ZONES \
+  --node-size $NODE_SIZE \
+  --node-count 3 \
+  --master-size ${MASTER_SIZE} \
+  --master-count 3 \
+  --master-zones ${ZONES} \
+  --networking=calico \
+  --topogoly=private
 ```
 
-`kops create cluster --zones us-east-1 --topology private --networking calico --master-size t3.medium --master-count 1 --node-size t3.medium ${NAME}`
-
 > What's happening here?
-* `kops` will create cluster in zone `us-east-1`
-* Nodes/Pods/Master will be communicating via `private` topology
+* `kops` will create cluster in zone `us-east-1` with 3 AZs 
 * Install Calico CNI plugin for networking 
-* 1 master nodes of type t3.medium
-* 2 worker nodes of type t3.medium
+* 3 master nodes of type t3.medium
+* 3 worker nodes of type t3.medium
+* Uses `Calico` as Network plugin 
+* Nodes/Pods/Master will be communicating via `private` topology
 
 Since we are only using private IPs, out external access will be only via the AWS load balancer.
 To do so, we will use nginx ingree controller.
@@ -135,7 +148,7 @@ To check if our deployment has been successful.
 `kubectl describe svc nginx-blue-svc`
 
 
-To check if our ingress controller has registered our traffic path 
+To check if our ingress controller has registered our traffic path. AWS ELB takes 5-10min to properly propagate and register our internal IPs. 
 
 `kubectl describe ingress nginx`
 
@@ -155,6 +168,17 @@ Rules:
   *           
               /green   nginx-green-svc:80 (10.244.0.173:80,10.244.0.188:80,10.244.0.70:80 + 2 more...)
 ```
+Scaling 
+=================
+To scale our services, no manual work is needed. Kubernetes can scale up and down as per `daemonSet` and `replicasSet`.
+
+`kubectl scale deployment nginx --replicas=5`
+
+`kubectl scale deployment nginx-blue --replicas=5`
+
+`kubectl scale deployment nginx-green --replicas=5`
+
+
 
 Monitoring
 =================
