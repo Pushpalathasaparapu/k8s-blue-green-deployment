@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: nginx-svc
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP
     targetPort: 80
   selector:
-    name: nginx
-status:
-  loadBalancer: {}
+    name: nginx"
