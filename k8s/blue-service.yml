@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: nginx-blue-svc
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP
@@ -10,5 +11,3 @@ spec:
   selector:
     # name: nginx
     version: "blue"
-status:
-  loadBalancer: {}
